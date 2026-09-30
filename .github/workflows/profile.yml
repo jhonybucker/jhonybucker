@@ -1,0 +1,43 @@
+name: Perfil (cobrinha + 3D)
+
+on:
+  schedule:
+    # 06:17 de Brasilia (UTC-3) = 09:17 UTC
+    - cron: "17 9 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Gera a cobrinha (clara + escura)
+        uses: Platane/snk@v3
+        with:
+          github_user_name: jhonybucker
+          outputs: |
+            dist/github-snake.svg?color_snake=#0078D4
+            dist/github-snake-dark.svg?palette=github-dark&color_snake=#0078D4
+
+      - name: Gera o calendario 3D
+        uses: yoshi389111/github-profile-3d-contrib@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          USERNAME: jhonybucker
+
+      - name: Commit so quando o grafico muda
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add -A .
+          if git diff --cached --quiet; then
+            echo "sem mudanca no grafico - nada a commitar"
+          else
+            git commit -m "chore: atualiza cobrinha e calendario 3D"
+            git push
+          fi
