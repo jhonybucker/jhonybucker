@@ -1,6 +1,6 @@
 <div align="center">
 
-# 👋 Olá, eu sou o Jhony Bucker
+# Olá, eu sou o Jhony Bucker
 
 **Administrador de TI / Microsoft 365** · automação de rotinas · Next.js + Microsoft Graph + PowerShell
 
